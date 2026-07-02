@@ -104,15 +104,30 @@ pub(crate) fn get_blk<T: Copy>(table: &[T; 81], index: usize) -> [T; 9] {
     std::array::from_fn(|i| table[start + (i / 3) * 9 + (i % 3)])
 }
 
-/* 
-pub(crate) fn generate_mask(field: u16, index: u8) -> u16 {
-    let mut candidates = field;
-    for _ in 0..index {
-        candidates &= candidates.wrapping_neg();
+pub (crate) fn combine_triples(fields: &[u16; 9]) -> [u16; 3] {
+    let mut combined_fields: [u16; 3] = [0u16; 3];
+    for i in 0..3 {
+        let mut combined_field: u16 = 0b00_0000_0000;
+        for j in 0..3 {
+            let field = fields[i*3+j];
+            if field < CHECKING_NUM {
+                combined_field |= field;
+            }
+        }
+        combined_fields[i] = combined_field;
     }
-    candidates & candidates.wrapping_neg()
+    combined_fields
 }
-*/
+
+// combine three inputs, if one and only one is true return true
+pub (crate) fn triple_xor(arr: &[u16; 3]) -> u16 {
+    let a = arr[0];
+    let b = arr[1];
+    let c = arr[2];
+    let at_least_one = a | b | c;
+    let two_or_more  = (a & b) | (b & c) | (a & c);
+    at_least_one & !two_or_more
+}
 
 
 pub(crate) fn generate_mask(field: u16, index: u8) -> u16 {

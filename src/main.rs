@@ -1,8 +1,6 @@
 #![allow(dead_code)]
 
-use std::{iter, time::Instant};
-
-use crate::helper::generate_mask;
+use std::{time::Instant};
 
 mod display;
 mod helper;
@@ -11,7 +9,7 @@ mod checker;
 mod init;
 
 const START_PUZZLE: usize = 1; // not 0
-const PUZZEL_AMOUNT: usize = 49152;
+const PUZZEL_AMOUNT: usize = 49151;
 
 
 fn main() {
